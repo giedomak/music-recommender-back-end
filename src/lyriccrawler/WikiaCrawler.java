@@ -56,5 +56,4 @@ public class WikiaCrawler {
 		}
 		return lyricText;
 	}
-
 }
