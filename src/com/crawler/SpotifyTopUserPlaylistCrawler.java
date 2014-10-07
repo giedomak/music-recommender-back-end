@@ -54,7 +54,7 @@ public class SpotifyTopUserPlaylistCrawler {
 			CloseableHttpClient httpclient = HttpClients.createDefault();
 		
 			//INIT http get client
-			HttpGet httpget = new HttpGet("https://api.spotify.com/v1/users/tvliet/playlists");
+			HttpGet httpget = new HttpGet("https://api.spotify.com/v1/users/"+userId+"/playlists");
 		
 			//Set accesToken header, use adHeader for a second one.
 			httpget.setHeader("Authorization","Bearer "+ this.accessToken);

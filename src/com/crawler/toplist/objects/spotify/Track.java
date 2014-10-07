@@ -18,7 +18,12 @@ public class Track {
 	public String getArtist() {
 		String name = "";
 		for(com.crawler.toplist.objects.spotify.ArtistSimple item : artists){
-			name += item.getName();
+			
+			if(name.length() == 0) {
+				name += item.getName();
+			} else {
+				name += ", "+item.getName();
+			}
 		}
 		return name;
 	}
