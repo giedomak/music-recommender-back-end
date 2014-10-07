@@ -11,6 +11,10 @@ public class Track {
 		return name;
 	}
 	
+	public String getId() {
+		return id;
+	}
+	
 	public String getArtist() {
 		String name = "";
 		for(com.crawler.toplist.objects.spotify.ArtistSimple item : artists){

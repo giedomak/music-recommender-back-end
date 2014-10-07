@@ -13,12 +13,39 @@ import com.crawler.toplist.objects.spotify.User;
 import com.crawler.toplist.objects.spotify.UserPlaylist;
 import com.google.gson.Gson;
 
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 
-public class SpotifyUserPlaylistCrawler {
+
+public class SpotifyTopUserPlaylistCrawler {
 	private String accessToken;
+	private Connection MySQLCon = null;
+	private String urlSQL = null;
+	private String usernameSQL = null;
+	private String passwordSQL = null;
+	private String databaseSQL = null;
 	
-	public SpotifyUserPlaylistCrawler(String OAuthToken) {
+	public SpotifyTopUserPlaylistCrawler(String OAuthToken, String urlSQL, String usernameSQL, String passwordSQL, String databaseSQL) {
+		/*try {
+			Class.forName("com.mysql.jdbc.Driver");
+			MySQLCon = DriverManager.getConnection(urlSQL,usernameSQL, passwordSQL);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}*/
+		
 		this.accessToken = OAuthToken;
+		this.urlSQL = urlSQL;
+		this.usernameSQL = usernameSQL;
+		this.passwordSQL = passwordSQL;
+		this.databaseSQL = databaseSQL;
 	}
 	
 	public void Start(String userId) {
@@ -48,7 +75,7 @@ public class SpotifyUserPlaylistCrawler {
 			UserPlaylist playlists = gson.fromJson(content,com.crawler.toplist.objects.spotify.UserPlaylist.class);
 			
 			//Init playlist Crawer
-			SpotifyPlayListCrawler spotifyPlayListCrawer = new SpotifyPlayListCrawler(this.accessToken);
+			SpotifyTopPlayListCrawler spotifyPlayListCrawer = new SpotifyTopPlayListCrawler(this.accessToken, this.urlSQL,this.usernameSQL, this.passwordSQL, this.databaseSQL);
 			
 			//Loop trough each users playlist and retrieve it.
 			for(com.crawler.toplist.objects.spotify.PlaylistSimple item : playlists.getItems()) {
