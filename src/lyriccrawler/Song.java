@@ -1,12 +1,22 @@
 package lyriccrawler;
 
 public class Song {
+	private int id;
 	private String artist, title;
 
-	public Song(String artist, String title) {
+	public Song(int id, String artist, String title) {
 		super();
+		this.id = id;
 		this.artist = artist;
 		this.title = title;
+	}
+
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
 	}
 
 	public String getArtist() {
