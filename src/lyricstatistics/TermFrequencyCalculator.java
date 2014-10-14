@@ -31,7 +31,7 @@ public class TermFrequencyCalculator {
 			
 			System.out.println("<<New lyric>>");
 			int lyricId = resultSet.getInt("id");
-			String text = resultSet.getString("text").toLowerCase(); //TODO: lowercase
+			String text = resultSet.getString("text").toLowerCase();
 			
 			HashMap<String, Integer> termFrequency = new HashMap<String, Integer>();
 			String[] terms = text.split("[\\p{Punct}\\s]+");
@@ -58,9 +58,10 @@ public class TermFrequencyCalculator {
 				insertLyricStatement.setInt(2, lyricId);
 				insertLyricStatement.setInt(3, frequency);
 				
-				insertLyricStatement.executeUpdate();
+				insertLyricStatement.addBatch();
 			}
 		}
+		insertLyricStatement.executeBatch();
 	}
 
 }

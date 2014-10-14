@@ -30,7 +30,7 @@ public class LyricCrawler {
 					+ "user=root&password=Aarde-Rond-1");
 		
 			Statement statement = connection.createStatement();
-			ResultSet resultSet = statement.executeQuery("SELECT id, artist, title FROM song WHERE id NOT IN (SELECT song_id FROM lyric) LIMIT 1000");
+			ResultSet resultSet = statement.executeQuery("SELECT id, artist, title FROM song WHERE id NOT IN (SELECT song_id FROM lyric) LIMIT 500");
 			
 			while (resultSet.next()) {
 				int id = resultSet.getInt("id");
