@@ -10,6 +10,14 @@ import java.util.Map.Entry;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+
+
 
 public class PlutchikEmotions {
 	
@@ -18,12 +26,52 @@ public class PlutchikEmotions {
 
 	public static void main(String[] args) throws IOException {
 		PlutchikEmotions e = new PlutchikEmotions();
+    List<Lyric> lyrics = new ArrayList<Lyric>();
+    
+    try {
+      Connection connection;
+
+      connection = DriverManager.getConnection("jdbc:mysql://178.62.207.179/2id26?"
+          + "user=root&password=Aarde-Rond-1");
+
+      Statement statement = connection.createStatement();
+      ResultSet resultSet = statement.executeQuery("SELECT id, text FROM lyric");
+
+      while (resultSet.next()) {
+        int id = resultSet.getInt("id");
+        String text = resultSet.getString("text");
+        lyrics.add(new Lyric(id, text));
+      }
+
+//      PreparedStatement insertLyricStatement = connection
+//                .prepareStatement("INSERT INTO lyric VALUES (default, ?, ?, ?)");
+//
+//      for (Song song : songs) {
+//        System.out.println("[Searching lyrics.wikia.com for " + song.getArtist() + " - " + song.getTitle() + "]");
+//
+//        String lyric = WikiaCrawler.getLyrics(song);
+//        if (!lyric.equals("")) {
+//          System.out.println("Found!");
+//
+//          insertLyricStatement.setInt(1, song.getId());
+//          insertLyricStatement.setString(2, "wikia");
+//          insertLyricStatement.setString(3, lyric);
+//          insertLyricStatement.executeUpdate();
+//        }
+//        else {
+//          System.out.println("No lyric found");
+//        }
+//      }
+    } catch(SQLException ex) {
+      ex.printStackTrace();
+    }
 		
-		BufferedReader br = new BufferedReader(new FileReader("./export100k.txt"));
+		BufferedReader br = new BufferedReader(new FileReader("./export14.txt"));
 		BufferedWriter bw = new BufferedWriter(new FileWriter("./export100k_emotion.txt"));
 		String line;
-		while ((line = br.readLine()) != null) {
-			String tweet = line;
+    
+		for(Lyric lyric : lyrics) {
+			String tweet = lyric.text;
 			String tweet2 = tweet.replace("~",  "").replace("#", "").replace("_", "").replace("?",  "").replace("\"", "").replace("\'", "").replace("*",  "").replaceAll("[\\s]+", " ").toLowerCase();
 
 //			String tweet = "oh no #fml";

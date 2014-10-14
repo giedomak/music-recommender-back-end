@@ -17,9 +17,9 @@ public class SentiStrengthDemo {
 	
 	public static void main(String[] args) throws IOException {
 		SentiStrength ss = new SentiStrength();
-		String init[] = {"sentidata", "./SentStrengthData/", "explain", "exclamations2", "questionsReduceNeg", "maxWordsBeforeSentimentToNegate", "2", "maxWordsAfterSentimentToNegate", "3"};
+		String init[] = {"sentidata", "./src/SentiStrength/", "explain", "exclamations2", "questionsReduceNeg", "maxWordsBeforeSentimentToNegate", "2", "maxWordsAfterSentimentToNegate", "3"};
 		ss.initialise(init);
-		BufferedReader br = new BufferedReader(new FileReader("./export100k.txt"));
+		BufferedReader br = new BufferedReader(new FileReader("./export14.txt"));
 		BufferedWriter bw = new BufferedWriter(new FileWriter("./export100k_polarity.txt"));
 		String line;
 		while ((line = br.readLine()) != null) {

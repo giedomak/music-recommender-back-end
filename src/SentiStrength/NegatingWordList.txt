@@ -10,7 +10,6 @@ dont
 isn't
 isnt
 never
-no
 not
 won't
 wont

@@ -87,7 +87,6 @@ amputate*	-2	General Inquirer Feb 2010
 amus*	2	
 anarchist*	-2	General Inquirer Feb 2010
 anarchy	-2	General Inquirer Feb 2010
-angel*	2
 angelic	2	Hannes GI add
 anger*	-4	
 angr*	-4	
@@ -258,7 +257,6 @@ brawl*	-2	General Inquirer Feb 2010
 brazen	-2	General Inquirer Feb 2010
 breach*	-2	General Inquirer Feb 2010
 breakdown*	-2	General Inquirer Feb 2010
-breaking\Snews	1
 bribe*	-2	General Inquirer Feb 2010
 brillian*	2	
 bristle*	-2	General Inquirer Feb 2010
@@ -315,9 +313,6 @@ censor*	-2	General Inquirer Feb 2010
 censure*	-2	General Inquirer Feb 2010
 chafe	-2	General Inquirer Feb 2010
 challenge*	-2	General Inquirer Feb 2010
-champ	2
-champion	2
-champions	2
 chaos	-2	General Inquirer Feb 2010
 chaotic*	-2	General Inquirer Feb 2010
 charge*	-2	General Inquirer Feb 2010
@@ -691,7 +686,6 @@ disrupt*	-2	General Inquirer Feb 2010
 dissatisf*	-2	
 dissent*	-2	General Inquirer Feb 2010
 dissolution	-2	General Inquirer Feb 2010
-distasteful	-2
 distort*	-2	General Inquirer Feb 2010
 distract*	-2	
 distraught	-4	
@@ -948,7 +942,7 @@ fuckface	-3	Feb-11
 fuckin*	-1	'changed from -3 - a booster word more than a negative word
 fucks	-3	
 fuckwit	-2	Feb-11
-fucktard	-2	Feb-11
+fuctard	-2	Feb-11
 fud	-3	fear, uncertainty and doubt
 fugitive*	-2	General Inquirer Feb 2010
 fugly	-4	Feb-11
@@ -957,7 +951,6 @@ fume*	-3
 fumes	-2	kev mod
 fuming	-4	
 fun	2	
-funeral	-2
 funn*	2	
 funnel*	1	kev mod
 furious*	-4	
@@ -972,17 +965,14 @@ garbage	-3	Feb-11
 gash*	-2	General Inquirer Feb 2010
 gassed	-2	Feb-11
 gaudy	-2	General Inquirer Feb 2010
-gay*	-2	common in US as term of abuse
+gay	-2	common in US as term of abuse
 geek*	-1	
 genero*	2	
-genius	2
 gentle	2	
 gentler	3	
 gentlest	3	
 gently	2	
 germ*	-2	General Inquirer Feb 2010
-german	0
-germany	0
 ghastly	-2	General Inquirer Feb 2010
 ghetto	-2	General Inquirer Feb 2010
 gibberi*	-2	Feb-11
@@ -1001,9 +991,7 @@ glorification	-2	kev mod
 glory	2	
 glum*	-3	General Inquirer Feb 2010 kev mod
 gmbo	3	giggling my butt off
-goddammit	-2
-goddamnit	-2
-goddamned	-2
+goddam*	-3	
 good	2	Could also be 1?
 goodness	3	
 gorgeous*	3	
@@ -1111,6 +1099,7 @@ helpful*	2	helping	2
 helpless*	-2	removed	helps	2
 hero*	3	
 hesita*	-1	
+hey	2	27-Jul-09
 hideous	-2	Feb-11
 hijack*	-2	Feb-11
 hilarious*	3	
@@ -1357,6 +1346,7 @@ libel	-3	Feb-11
 lied	-3	
 lies	-3	2
 lifeless	-2	General Inquirer Feb 2010
+like	2	Note - could be comparator - A is like B but gives better results with 2 than 1 Aug 2, 2009
 likeab*	3	
 liked	3	
 likes	3	
@@ -1416,7 +1406,6 @@ madly	2
 madman	-2	General Inquirer Feb 2010
 madmen	-2	General Inquirer Feb 2010
 madness	-2	General Inquirer Feb 2010
-magic*	3
 magnific*	4	
 magnification	1	Tuomo Aug 3 2011
 maladjusted	-2	General Inquirer Feb 2010

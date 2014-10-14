@@ -8,30 +8,20 @@ especially	1	9 June 2010
 extremely	2
 fuckin	2
 fucking	2
-goddamn	2
 hugely	2
 incredibly	2
 just	-1
-key	1
-major	1
 may	-1	9 June 2010
 might	-1	9 June 2010
-more	1
-most	1
 ought	-1	9 June 2010
 overwhelmingly	2
-principal	1
 really	1	9 June 2010
 should	-1	9 June 2010
-significant	1
-significantly	1
 slightly	-1	9 June 2010
-so	1	Was 1 but sometimes used as neutral or mild term was 0 but mostly used as positive term
+so	0	Was 1 but sometimes used as neutral or mild term
 some	-1
 sometimes	-1	9 June 2010
 sum	-1
-surprising	1
-surprisingly	1
 total	1	9 June 2010
 totally	1	9 June 2010
 very	1

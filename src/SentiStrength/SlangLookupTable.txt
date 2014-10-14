@@ -8,7 +8,6 @@ alol	actually laughing out loud
 b4	before
 b4n	bye for now
 bak	back at the keyboard
-bc	because
 bf	boyfriend
 bff	best friends forever
 bfn	bye for now
@@ -65,7 +64,6 @@ m/f	male or female 
 m8	mate
 milf	mother I would like to fuck
 oll	online love 
-omfg	oh my fucking god
 omg	oh my god
 otoh	on the other hand 
 pir	parent in room
