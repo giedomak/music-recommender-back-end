@@ -62,9 +62,6 @@ public class PlutchikEmotions {
 //          System.out.println("No lyric found");
 //        }
 //      }
-    } catch(SQLException ex) {
-      ex.printStackTrace();
-    }
 		
 		BufferedReader br = new BufferedReader(new FileReader("./export14.txt"));
 		BufferedWriter bw = new BufferedWriter(new FileWriter("./export100k_emotion.txt"));
@@ -106,6 +103,9 @@ public class PlutchikEmotions {
 			}
 			
 			tweet = tweet.replaceAll("[^\\w\\s\\/\\?;:<>\\.,\\'\\)\\(\\@\\#]", "");
+      
+      PreparedStatement insertLyricStatement = connection
+                .prepareStatement("update lyric set plutchik = ? where id = ?");
 			
 			if (maxEntry.getValue() > 0) {
 				for(Entry m : e.emotionMap.entrySet()) {
@@ -113,17 +113,30 @@ public class PlutchikEmotions {
 //						System.out.println(m.getKey() + ": " + m.getValue());
 						String output = e.getEmotion(m.getKey().toString()) + "\t" + tweet + "\r\n";
 //						System.out.println(output);
-						bw.write(output);
+//						bw.write(output);
+            
+            insertLyricStatement.setInt(1, e.getEmotion(m.getKey().toString()));
+            insertLyricStatement.setInt(2, lyric.id);
+            insertLyricStatement.executeUpdate();
+            
 					}
 				}
 			} else {
 				String output = "0\t" + tweet + "\r\n";
 //				System.out.println(output);
-				bw.write(output);
+        
+        insertLyricStatement.setInt(1, 0);
+        insertLyricStatement.setInt(2, lyric.id);
+        insertLyricStatement.executeUpdate();
+//				bw.write(output);
 			}
 		}
 		bw.close();
 		br.close();
+    
+    } catch(SQLException ex) {
+      ex.printStackTrace();
+    }
 	}
 	
 	private void executeRegex(String emotion, String tweet) throws IOException
