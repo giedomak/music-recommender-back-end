@@ -4,6 +4,12 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -19,11 +25,31 @@ public class SentiStrengthDemo {
 		SentiStrength ss = new SentiStrength();
 		String init[] = {"sentidata", "./src/SentiStrength/", "explain", "exclamations2", "questionsReduceNeg", "maxWordsBeforeSentimentToNegate", "2", "maxWordsAfterSentimentToNegate", "3"};
 		ss.initialise(init);
-		BufferedReader br = new BufferedReader(new FileReader("./export14.txt"));
-		BufferedWriter bw = new BufferedWriter(new FileWriter("./export100k_polarity.txt"));
+    
+    List<Lyric> lyrics = new ArrayList<Lyric>();
+    
+    try {
+      Connection connection;
+
+      connection = DriverManager.getConnection("jdbc:mysql://178.62.207.179/2id26?"
+          + "user=root&password=Aarde-Rond-1");
+
+      Statement statement = connection.createStatement();
+      ResultSet resultSet = statement.executeQuery("SELECT id, text FROM lyric");
+
+      while (resultSet.next()) {
+        int id = resultSet.getInt("id");
+        String text = resultSet.getString("text");
+        lyrics.add(new Lyric(id, text));
+      }
+    
+    
+//		BufferedReader br = new BufferedReader(new FileReader("./export14.txt"));
+//		BufferedWriter bw = new BufferedWriter(new FileWriter("./export100k_polarity.txt"));
+    
 		String line;
-		while ((line = br.readLine()) != null) {
-			String tweet = line;
+		for (Lyric lyric : lyrics) {
+			String tweet = lyric.text;
 			String tweet2 = tweet.replace("#", "").replace("_", "").replace("  ", " ").replace("\"", "").replace("\'", "").toLowerCase().replaceAll("[^\\w\\s\\/\\?;:<>\\.,\\'\\)\\(\\@\\#]", "");
 //			String tweet = "I am feeling up and down"; // test line
 			String ssout = ss.computeSentimentScores(tweet2);
@@ -34,11 +60,24 @@ public class SentiStrengthDemo {
 				int score = getScore(ss, sentence);
 				scores.add(score);
 			}
-			bw.write(getPolarity(sum(scores)) + "\t" + tweet2 + "\n");
+      
+      PreparedStatement insertLyricStatement = connection
+                .prepareStatement("update lyric set polarity = ? where id = ?");
+      
+      insertLyricStatement.setInt(1, getPolarity(sum(scores)));
+      insertLyricStatement.setInt(2, lyric.id);
+      insertLyricStatement.executeUpdate();
+      
+//			bw.write(getPolarity(sum(scores)) + "\t" + tweet2 + "\n");
 			System.out.println(getPolarity(sum(scores)));
 		}
-		bw.close();
-		br.close();
+    
+    
+    } catch(SQLException ex) {
+      ex.printStackTrace();
+    }
+//		bw.close();
+//		br.close();
 	}
 	
 	public static List<String> getSentences(String tweet) {
