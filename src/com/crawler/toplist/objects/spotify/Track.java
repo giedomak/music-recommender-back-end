@@ -4,14 +4,17 @@ public class Track {
 	private String name;
 	private int popularity;
 	private String id;
-	private String added_at;
 	private ArtistSimple[] artists;
 	
 	public String getName() {
 		return name;
 	}
+
+	public int getPopularity(){
+		return popularity;
+	}
 	
-	public String getId() {
+	public String getId(){
 		return id;
 	}
 	
