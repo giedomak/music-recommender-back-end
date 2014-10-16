@@ -24,13 +24,15 @@ public class SpotifyUserPlaylistCrawler {
 	private String usernameSQL = null;
 	private String passwordSQL = null;
 	private String databaseSQL = null;
+	private Boolean debug = false;
 	
-	public SpotifyUserPlaylistCrawler(String OAuthToken, String urlSQL, String usernameSQL, String passwordSQL, String databaseSQL) {
+	public SpotifyUserPlaylistCrawler(Boolean debug, String OAuthToken, String urlSQL, String usernameSQL, String passwordSQL, String databaseSQL) {
 		this.accessToken = OAuthToken;
 		this.urlSQL = urlSQL;
 		this.usernameSQL = usernameSQL;
 		this.passwordSQL = passwordSQL;
 		this.databaseSQL = databaseSQL;
+		this.debug = debug;
 	}
 	
 	public List<Integer> Start(String userId) {
@@ -60,7 +62,7 @@ public class SpotifyUserPlaylistCrawler {
 			UserPlaylist playlists = gson.fromJson(content,com.crawler.toplist.objects.spotify.UserPlaylist.class);
 			
 			//Init playlist Crawer
-			SpotifyPlaylistCrawler spotifyPlaylistCrawer = new SpotifyPlaylistCrawler(this.accessToken, this.urlSQL,this.usernameSQL, this.passwordSQL, this.databaseSQL);
+			SpotifyPlaylistCrawler spotifyPlaylistCrawer = new SpotifyPlaylistCrawler(this.debug, this.accessToken, this.urlSQL,this.usernameSQL, this.passwordSQL, this.databaseSQL);
 			
 			//Init ids 
 			List<Integer> mainList = new ArrayList<Integer>();
@@ -69,9 +71,11 @@ public class SpotifyUserPlaylistCrawler {
 			//Loop trough each users playlist and retrieve it.
 			for(com.crawler.toplist.objects.spotify.PlaylistSimple item : playlists.getItems()) {
 				
-				System.out.println("");
-				System.out.println("---------------- "+item.getName()+" ----------------");
-				System.out.println("");
+				if(this.debug) {
+					System.out.println("");
+					System.out.println("---------------- "+item.getName()+" ----------------");
+					System.out.println("");
+				}
 				
 				//Get owner out item
 				User owner = item.getOwner();

@@ -22,13 +22,15 @@ public class SpotifyUserCrawler {
 	private String usernameSQL = null;
 	private String passwordSQL = null;
 	private String databaseSQL = null;
+	private Boolean debug = false;
 	
-	public SpotifyUserCrawler(String OAuthToken, String urlSQL, String usernameSQL, String passwordSQL, String databaseSQL) {
+	public SpotifyUserCrawler(Boolean debug, String OAuthToken, String urlSQL, String usernameSQL, String passwordSQL, String databaseSQL) {
 		this.accessToken = OAuthToken;
 		this.urlSQL = urlSQL;
 		this.usernameSQL = usernameSQL;
 		this.passwordSQL = passwordSQL;
 		this.databaseSQL = databaseSQL;
+		this.debug = debug;
 	}
 	
 	public List<Integer> Start() {
@@ -60,7 +62,7 @@ public class SpotifyUserCrawler {
 			User user = gson.fromJson(content,com.crawler.toplist.objects.spotify.User.class);
 			
 			//Init UserPlaylist crawler
-			SpotifyUserPlaylistCrawler spotifyUserPlaylistCrawler = new SpotifyUserPlaylistCrawler(this.accessToken, this.urlSQL,this.usernameSQL, this.passwordSQL, this.databaseSQL);
+			SpotifyUserPlaylistCrawler spotifyUserPlaylistCrawler = new SpotifyUserPlaylistCrawler(this.debug, this.accessToken, this.urlSQL,this.usernameSQL, this.passwordSQL, this.databaseSQL);
 			
 			//Start Playlist crawler
 			return spotifyUserPlaylistCrawler.Start(user.getId());

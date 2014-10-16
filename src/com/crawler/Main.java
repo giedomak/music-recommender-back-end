@@ -1,5 +1,6 @@
 package com.crawler;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.QBE.MostTermsUsedCalculator;
@@ -33,25 +34,22 @@ public class Main {
 		
 		//List<Integer> idsDeezer = deezer.Start();
 		
-		SpotifyUserCrawler spotify = new SpotifyUserCrawler("BQCFS12R3VoMy2mxvFvn5tNUgxY8zuU-Esf_qC7hi7F5wR1HbKsZmLQ5Y3q4tESmcffnx0X4vdHpno8hiKK9yWPh0dRzmRWywqgztToCx4y-aKoEl-Q960VhN5nnS2U_G4gfztrvkluX9NPjjMarblBCOrKXmJDf4Nuw47Ve2fPrPUqvDu2bCKjGSvV-7ox-0g", urlSQL, usernameSQL, passwordSQL, databaseSQL);
+		SpotifyUserCrawler spotify = new SpotifyUserCrawler(false, "BQDQXtp2eZHlXluJrryNKem93lYCPOnlK1zEcxMGBbG-ZZ4d0sdZasPakXrx7P6ea_HQu2OnSmWzh4X520hqMvEk_3QTFGZeGWfUadC3Yo23TcG3R7PiVcKSR5VAsg-l45W0rIlb0mI_sY0JvOJhEg6HaUE3B43pVzHfsaOgSDbuZ_q48mOHc59yZHS63y9XOg", urlSQL, usernameSQL, passwordSQL, databaseSQL);
 		
 		List<Integer> idsSpotify = spotify.Start();
 		
-		
 		//idsDeezer.removeAll(idsSpotify);
 		//idsDeezer.addAll(idsSpotify);
-		
-		/*for(int id : idsSpotify) {
-			System.out.print(id+"-");
-		}*/
 		
 		MostTermsUsedCalculator calc = new MostTermsUsedCalculator(null,null,null,null);
 		
 		String lyricIds = calc.startSongIds(idsSpotify);
 		
-		//System.out.println("Test"+lyricIds);
-		
-		calc.startLyricsIds(lyricIds, 10, 2.0);
+		List<String> terms = calc.startLyricsIds(lyricIds, 1000, 2.0);
+		System.out.println("Terms:");
+		for(String term : terms) {
+			System.out.print("'"+term+"', ");
+		}
 	}
 
 }

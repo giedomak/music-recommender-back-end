@@ -28,8 +28,9 @@ public class SpotifyPlaylistCrawler {
 	private String usernameSQL = null;
 	private String passwordSQL = null;
 	private String databaseSQL = null;
+	private Boolean debug = false;
 	
-	public SpotifyPlaylistCrawler(String OAuthToken, String urlSQL, String usernameSQL, String passwordSQL, String databaseSQL) {
+	public SpotifyPlaylistCrawler(Boolean debug, String OAuthToken, String urlSQL, String usernameSQL, String passwordSQL, String databaseSQL) {
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
 			MySQLCon = DriverManager.getConnection("jdbc:mysql://"+urlSQL+"/"+databaseSQL+"?user="+usernameSQL+"&password="+passwordSQL);
@@ -74,8 +75,10 @@ public class SpotifyPlaylistCrawler {
 			//Convert Json into playlist Object
 			Playlist playlist = gson.fromJson(content,com.crawler.toplist.objects.spotify.Playlist.class);
 			
-			//Out number of songs in list
-			System.out.println("Number: "+playlist.getTotal());
+			if(this.debug) {
+				//Out number of songs in list
+				System.out.println("Number: "+playlist.getTotal());
+			}
 			
 			//Init list for know id's
 			List<Integer> listIds = new ArrayList<Integer>();
@@ -94,7 +97,9 @@ public class SpotifyPlaylistCrawler {
 				if(result.next()) {
 					//Add list to found songs
 					listIds.add(result.getInt(1));
-					System.out.println("------------------ KNOW -------------------");
+					if(this.debug) {
+						System.out.println("------------------ KNOW -------------------");
+					}
 				} else {
 					//add song to unkowns songs
 					PreparedStatement query = MySQLCon.prepareStatement("INSERT INTO unknowSong(spotifyId, artist, title) VALUES(?,?,?)");
@@ -104,8 +109,9 @@ public class SpotifyPlaylistCrawler {
 					query.execute();
 				}
 				
-				
-				System.out.println(track.getId()+" -- "+track.getArtist()+" -- "+track.getName()+" -- "+track.getPopularity());
+				if(this.debug) {
+					System.out.println(track.getId()+" -- "+track.getArtist()+" -- "+track.getName()+" -- "+track.getPopularity());
+				}
 			}
 			
 			return listIds;
