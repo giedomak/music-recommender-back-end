@@ -68,14 +68,18 @@ public class MostTermsUsedCalculator {
 	
 	public List<String> startLyricsIds(String ids, int nr, double threshold) {
 		try {
-			String query = "SELECT termsTable.term, SUM(lyric_id) as doc, SUM(termfreqIdfTable.frequency) as occ, termsTable.totalOcc, termsTable.totalDoc, termsTable.idf FROM termfreqIdfTable JOIN termsTable ON termfreqIdfTable.term=termsTable.term WHERE termfreqIdfTable.lyric_id IN ( ? ) GROUP BY termfreqIdfTable.term HAVING (termsTable.totalOcc > SUM(termfreqIdfTable.frequency) AND (termsTable.totalDoc/2) > (SUM(lyric_id)+1)) LIMIT ?";
+			String query = "SELECT termsTable.term, SUM(lyric_id) as doc, SUM(termfreqIdfTable.frequency) as occ, termsTable.totalOcc, termsTable.totalDoc, termsTable.idf FROM termfreqIdfTable JOIN termsTable ON termfreqIdfTable.term=termsTable.term WHERE termfreqIdfTable.lyric_id IN ( "+ids+" ) GROUP BY termfreqIdfTable.term HAVING (termsTable.totalOcc > SUM(termfreqIdfTable.frequency) AND (termsTable.totalDoc) > (SUM(lyric_id))) LIMIT ?";
 			
 			PreparedStatement pst = MySQLCon.prepareStatement(query);
 			List<Double> idfs  = new ArrayList<Double>();
 			
-			pst.setString(1, ids);
 			
-			pst.setInt(2, nr);
+			
+			//pst.setString(1, nr);
+			
+			pst.setInt(1, nr);
+			//System.out.println(pst.toString());
+			
 			ResultSet result = pst.executeQuery();
 			int a = 0;
 			while(result.next()) {
@@ -92,7 +96,11 @@ public class MostTermsUsedCalculator {
 			double dif = max-min;
 			int size = idfs.size();
 			
-			double thres = (dif/size)*(30);
+			double thres = (dif/size)*((a/2)-2);
+			
+			if(a < 3) {
+				thres = (dif/size)*(0);
+			}
 			double limL = (min+thres);
 			double limR = (max-thres);
 			
@@ -105,7 +113,7 @@ public class MostTermsUsedCalculator {
 			while(result.next()) {
 				
 				
-				if ( limL < result.getDouble(6) && result.getDouble(6) < limR) 
+				if ( limL <= result.getDouble(6) && result.getDouble(6) <= limR) 
 				{
 					//System.out.println(result.getString(1)+"-"+result.getString(6));
 					terms.add(result.getString(1));

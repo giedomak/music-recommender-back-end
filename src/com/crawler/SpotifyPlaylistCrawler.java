@@ -47,6 +47,7 @@ public class SpotifyPlaylistCrawler {
 		this.usernameSQL = usernameSQL;
 		this.passwordSQL = passwordSQL;
 		this.databaseSQL = databaseSQL;
+		this.debug = debug;
 	}
 	
 	public List<Integer> Start(String playlistId, String userId) {
