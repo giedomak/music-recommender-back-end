@@ -3,6 +3,7 @@ package com.crawler;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.QBE.DocumentSearchByTerms;
 import com.QBE.MostTermsUsedCalculator;
 
 public class Main {
@@ -34,7 +35,7 @@ public class Main {
 		
 		//List<Integer> idsDeezer = deezer.Start();
 		
-		SpotifyUserCrawler spotify = new SpotifyUserCrawler(false, "BQDQXtp2eZHlXluJrryNKem93lYCPOnlK1zEcxMGBbG-ZZ4d0sdZasPakXrx7P6ea_HQu2OnSmWzh4X520hqMvEk_3QTFGZeGWfUadC3Yo23TcG3R7PiVcKSR5VAsg-l45W0rIlb0mI_sY0JvOJhEg6HaUE3B43pVzHfsaOgSDbuZ_q48mOHc59yZHS63y9XOg", urlSQL, usernameSQL, passwordSQL, databaseSQL);
+		SpotifyUserCrawler spotify = new SpotifyUserCrawler(true, "BQCsp6s4p8Vulk_EXmpdLd2lShREEuZQYSIZL7cAg4tgKbP0HGmUxWcWTLjA-jp8bUaccp-B-cRfaXgDBfgw_13KSLj93rYrDz0roph-8Fu5foqyJUVfg_MluAGyxKNcB9hIQyKpUVv2kDcueP9tCudh1itC", urlSQL, usernameSQL, passwordSQL, databaseSQL);
 		
 		List<Integer> idsSpotify = spotify.Start();
 		
@@ -50,6 +51,11 @@ public class Main {
 		for(String term : terms) {
 			System.out.print("'"+term+"', ");
 		}
+		
+		DocumentSearchByTerms searcher = new DocumentSearchByTerms(false, urlSQL, usernameSQL, passwordSQL, databaseSQL);
+		System.out.println("");
+		System.out.println("Recomends:");
+		searcher.Search(terms, idsSpotify, 10);
 	}
 
 }
