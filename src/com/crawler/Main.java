@@ -35,9 +35,9 @@ public class Main {
 		
 		//List<Integer> idsDeezer = deezer.Start();
 		
-		//SpotifyUserCrawler spotify = new SpotifyUserCrawler(true, "BQBd7RGzrKYvnGUNH0V9xKYwgnw4jcsqUU2XjkI3Kop6WOwvrF042VgtUI6LlA0yOCOU-jfhqTKjyKTzgBe_PYl77ogmYKq45fvxhMjoI6FXOE1uPnjDj4zBs12D74wu7QfeF4q733jfr9fjBiyz2r9GLiB5fVrXqONuuxgnSE2zXvfMhttqS--i0cT31D4n83tio-Y", urlSQL, usernameSQL, passwordSQL, databaseSQL);
+		SpotifyUserCrawler spotify = new SpotifyUserCrawler(true, "BQBd7RGzrKYvnGUNH0V9xKYwgnw4jcsqUU2XjkI3Kop6WOwvrF042VgtUI6LlA0yOCOU-jfhqTKjyKTzgBe_PYl77ogmYKq45fvxhMjoI6FXOE1uPnjDj4zBs12D74wu7QfeF4q733jfr9fjBiyz2r9GLiB5fVrXqONuuxgnSE2zXvfMhttqS--i0cT31D4n83tio-Y", urlSQL, usernameSQL, passwordSQL, databaseSQL);
 		
-		SpotifyUserCrawler spotify = new SpotifyUserCrawler(false, "BQCcAV-eN23Ppnd_nC_OcKuLmSVwphWUoxD1v9hG1P6VazWaFeySDqtEaXKU4wKsvDeEpm2cbOS4lj5i5q34Ns9DfBkHVECi-ClBlihyLfBVXXelm_rH1k9OPNCbosuTWhdochRqHukHlBk8dITsHPIZw9mB", urlSQL, usernameSQL, passwordSQL, databaseSQL);
+		//SpotifyUserCrawler spotify = new SpotifyUserCrawler(false, "BQCcAV-eN23Ppnd_nC_OcKuLmSVwphWUoxD1v9hG1P6VazWaFeySDqtEaXKU4wKsvDeEpm2cbOS4lj5i5q34Ns9DfBkHVECi-ClBlihyLfBVXXelm_rH1k9OPNCbosuTWhdochRqHukHlBk8dITsHPIZw9mB", urlSQL, usernameSQL, passwordSQL, databaseSQL);
 		
 		
 		//SpotifyUserCrawler spotify = new SpotifyUserCrawler(false, "BQDIFTqUDFq_gnZRooDTe4dWbWR7HFNg5QFYRjk_eK4fX-P4T0Ph0MdpgE7E6BITDfxps2VjWn4VuoiaspVkpVlie0_l3ot2VJuz1Xt17ZiNI-AwF1PWfDJLTPW0unwVCgtTt8wpN42pwq1CMhLI5LSbaUu4r4-PgSi6cme16Qg6KIZXuwvkExyndEMLh43ZT3dpv5Ahr6ZQMhZ4mI32Lft4UyXm8PRUkpZar_4B5k2aQimRqe7cWmu4PmS91bfiVMi8sqI", urlSQL, usernameSQL, passwordSQL, databaseSQL);
@@ -55,8 +55,11 @@ public class Main {
 		
 		System.out.println("lyrics:"+lyricIds);
 		
+		//Giedo: Nice to show in the GUI
 		List<String> terms = calc.startLyricsIds(lyricIds, 1000, 2.0);
 		System.out.println("Terms:");
+		
+		
 		for(String term : terms) {
 			System.out.print("'"+term+"', ");
 		}
@@ -64,7 +67,15 @@ public class Main {
 		DocumentSearchByTerms searcher = new DocumentSearchByTerms(false, urlSQL, usernameSQL, passwordSQL, databaseSQL);
 		System.out.println("");
 		System.out.println("Recomends:");
-		searcher.Search(terms, idsSpotify, 10);
+		
+		//Giedo: This is the list of songId's
+		List<Integer> songIds = searcher.Search(terms, idsSpotify, 10);
+		
+		System.out.println("SongsId:");
+		
+		for(int id : songIds) {
+			System.out.print("'"+id+"', ");
+		}
 	}
 
 }

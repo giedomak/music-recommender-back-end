@@ -68,7 +68,11 @@ public class MostTermsUsedCalculator {
 	
 	public List<String> startLyricsIds(String ids, int nr, double threshold) {
 		try {
-			String query = "SELECT termsTable.term, SUM(lyric_id) as doc, SUM(termfreqIdfTable.frequency) as occ, termsTable.totalOcc, termsTable.totalDoc, termsTable.idf FROM termfreqIdfTable JOIN termsTable ON termfreqIdfTable.term=termsTable.term WHERE termfreqIdfTable.lyric_id IN ( "+ids+" ) GROUP BY termfreqIdfTable.term HAVING (termsTable.totalOcc > SUM(termfreqIdfTable.frequency) AND (termsTable.totalDoc) > (SUM(lyric_id))) LIMIT ?";
+			
+			//String query = "SELECT termsTable.term, SUM(lyric_id) as doc, SUM(termfreqIdfTable.frequency) as occ, termsTable.totalOcc, termsTable.totalDoc, termsTable.idf FROM termfreqIdfTable JOIN termsTable ON termfreqIdfTable.term=termsTable.term WHERE termfreqIdfTable.lyric_id IN ( "+ids+" ) GROUP BY termfreqIdfTable.term HAVING (termsTable.totalOcc > SUM(termfreqIdfTable.frequency) AND (termsTable.totalDoc) > (SUM(lyric_id))) LIMIT ?";
+			
+			
+			String query = "SELECT termsTable.term, SUM(lyric_id) as doc, SUM(termfreqIdfTable.frequency) as occ, termsTable.totalOcc, termsTable.totalDoc, termsTable.idf FROM termfreqIdfTable JOIN termsTable ON termfreqIdfTable.term=termsTable.term WHERE termfreqIdfTable.lyric_id IN ( "+ids+" ) GROUP BY termfreqIdfTable.term HAVING (termsTable.totalOcc > SUM(termfreqIdfTable.frequency)) LIMIT ?";
 			
 			PreparedStatement pst = MySQLCon.prepareStatement(query);
 			List<Double> idfs  = new ArrayList<Double>();
@@ -96,7 +100,7 @@ public class MostTermsUsedCalculator {
 			double dif = max-min;
 			int size = idfs.size();
 			
-			double thres = (dif/size)*((a/2)-2);
+			double thres = (dif/a)*((a/2)-2);
 			
 			if(a < 3) {
 				thres = (dif/size)*(0);
