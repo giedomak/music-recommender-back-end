@@ -41,14 +41,14 @@ public class TermFrequencyCalculator {
 			String text = resultSet.getString("text").toLowerCase();
 			
 			HashMap<String, Integer> termFrequency = new HashMap<String, Integer>();
-			String[] terms = text.split("[\\p{Punct}\\s]+");
+			String[] terms = text.split("[\\p{Punct}\\s]+"); // remove punctuation before splitting
 			
 			// Iterate over all words in the document and keep a counter for each term
 			for (String term : terms) {
 				if (termFrequency.containsKey(term)) {
 					int newFrequency = termFrequency.get(term) + 1;
 					termFrequency.put(term, newFrequency);
-				} else if (term.length() <= 20 && term.length() >= 2) {
+				} else if (term.length() <= 20 && term.length() >= 2) { // skip very small or large terms
 					termFrequency.put(term, 1);
 				}
 			}
