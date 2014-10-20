@@ -39,6 +39,9 @@ import org.carrot2.source.lucene.SimpleFieldMapperDescriptor;
 
 import com.google.common.collect.Maps;
 
+// we had decide that we did not use this and we only use the class Title clustering. 
+
+
 public class TitleClusteringDatabaseLucene {
 	// based on http://www.lucenetutorial.com/lucene-in-5-minutes.html
 	// based on https://github.com/carrot2/carrot2/blob/master/applications/carrot2-examples/examples/org/carrot2/examples/clustering/ClusteringDataFromLucene.java

@@ -17,13 +17,14 @@ import org.carrot2.core.ControllerFactory;
 import org.carrot2.core.Document;
 import org.carrot2.core.ProcessingResult;
 
+// cluster and labeling songs on title with the lingo algorithm from carrot2
 public class TitleClustering {
 	final ArrayList<Document> documents = new ArrayList<Document>();
 	
 	public TitleClustering() throws SQLException {
 		
 		org.apache.log4j.BasicConfigurator.configure();
-		
+		// Get connection with the database 
 		Connection connection;
 		connection = DriverManager.getConnection("jdbc:mysql://178.62.207.179/2id26?"
 				+ "user=root&password=Aarde-Rond-1");
@@ -36,7 +37,7 @@ public class TitleClustering {
 		
 		PreparedStatement insertClusterMemberStatement = connection
 		          .prepareStatement("INSERT INTO titleclustermember VALUES (?, ?)");
-		
+		// iterate overall songs
 		while (resultSet.next()) {
 			int id = resultSet.getInt("id");
 			String title = resultSet.getString("title").toLowerCase();
@@ -55,9 +56,10 @@ public class TitleClustering {
 		final ProcessingResult byTopicClusters = controller.process(documents, null,
 		LingoClusteringAlgorithm.class);
 		final List<Cluster> clustersByTopic = byTopicClusters.getClusters();
-		
+		// Print results to the console using existing ConsoleFormatter class
 		ConsoleFormatter.displayResults(byTopicClusters);
 		
+		// save each title cluster and label in the My SQL database 
 		for (Cluster cluster : clustersByTopic) {
 			System.out.println("Label: " + cluster.getLabel());
 			System.out.println("Id: " + cluster.getId());
