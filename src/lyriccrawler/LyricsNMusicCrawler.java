@@ -15,6 +15,11 @@ import org.jsoup.Jsoup;
 
 import com.google.gson.Gson;
 
+/**
+ * Lyrics crawler for LyricsNMusic.com
+ * 
+ * author: Erik Agterdenbos
+ */
 public class LyricsNMusicCrawler {
 
 	static class Lyrics {
@@ -23,10 +28,11 @@ public class LyricsNMusicCrawler {
 	}
 	
 	public LyricsNMusicCrawler() {
-		// TODO Auto-generated constructor stub
 	}
-
+	
 	public static String getLyrics(Song song) {
+		
+		// Step 1: search for the song using the API
 		String lyricText = "";
 		//http://api.lyricsnmusic.com/songs?artist=pharrell%20williams&track=happy
 		try {
@@ -34,25 +40,21 @@ public class LyricsNMusicCrawler {
 			URL url = uri.toURL();
 			Reader reader = new BufferedReader(new InputStreamReader(url.openStream()));
 			
-			//StringBuffer buffer = new StringBuffer();
-	        //int read;
-	        //char[] chars = new char[1024];
-	        //while ((read = reader.read(chars)) != -1)
-	        //    buffer.append(chars, 0, read);
 			
 			Gson gson = new Gson();
 	        Lyrics[] searchResult = gson.fromJson(reader, Lyrics[].class);
 	        if (searchResult.length > 0) {
+	        	// Step 2: retrieve the lyric from their original website
 	        	String lyricUrl = searchResult[0].url;
 	        	org.jsoup.nodes.Document lyricPage = Jsoup.connect(lyricUrl).get();
 	        	org.jsoup.select.Elements lyrics = lyricPage.select("pre[itemprop=description");
 				lyricText = lyrics.text();
 	        }
 
+	        // return lyrics
 	        return lyricText;
 			
 		} catch (URISyntaxException | IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return null;

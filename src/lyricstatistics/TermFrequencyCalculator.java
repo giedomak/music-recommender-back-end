@@ -9,6 +9,11 @@ import java.sql.Statement;
 import java.util.HashMap;
 import java.util.Map.Entry;
 
+/**
+ * Calculates term frequency for each lyrics and stores those statistics in the database
+ * 
+ * author: Erik Agterdenbos
+ */
 public class TermFrequencyCalculator {
 	
 	public static void main(String[] args) throws SQLException {
@@ -16,8 +21,9 @@ public class TermFrequencyCalculator {
 	}
 
 	public TermFrequencyCalculator() throws SQLException {
-		Connection connection;
 		
+		// Create MySQL connection
+		Connection connection;
 		connection = DriverManager.getConnection("jdbc:mysql://178.62.207.179/2id26?"
 				+ "user=root&password=Aarde-Rond-1");
 	
@@ -27,6 +33,7 @@ public class TermFrequencyCalculator {
 		PreparedStatement insertLyricStatement = connection
 		          .prepareStatement("INSERT INTO termfrequency VALUES (?, ?, ?, null)");
 		
+		// Iterate over all lyrics
 		while (resultSet.next()) {
 			
 			System.out.println("<<New lyric>>");
@@ -34,14 +41,14 @@ public class TermFrequencyCalculator {
 			String text = resultSet.getString("text").toLowerCase();
 			
 			HashMap<String, Integer> termFrequency = new HashMap<String, Integer>();
-			String[] terms = text.split("[\\p{Punct}\\s]+");
+			String[] terms = text.split("[\\p{Punct}\\s]+"); // remove punctuation before splitting
 			
 			// Iterate over all words in the document and keep a counter for each term
 			for (String term : terms) {
 				if (termFrequency.containsKey(term)) {
 					int newFrequency = termFrequency.get(term) + 1;
 					termFrequency.put(term, newFrequency);
-				} else if (term.length() <= 20 && term.length() >= 2) {
+				} else if (term.length() <= 20 && term.length() >= 2) { // skip very small or large terms
 					termFrequency.put(term, 1);
 				}
 			}
