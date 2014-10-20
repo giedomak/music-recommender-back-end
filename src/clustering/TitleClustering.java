@@ -1,4 +1,4 @@
-package termclustering;
+package clustering;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -17,10 +17,10 @@ import org.carrot2.core.ControllerFactory;
 import org.carrot2.core.Document;
 import org.carrot2.core.ProcessingResult;
 
-public class LyricClustering {
+public class TitleClustering {
 	final ArrayList<Document> documents = new ArrayList<Document>();
 	
-	public LyricClustering() throws SQLException {
+	public TitleClustering() throws SQLException {
 		
 		org.apache.log4j.BasicConfigurator.configure();
 		
@@ -29,20 +29,20 @@ public class LyricClustering {
 				+ "user=root&password=Aarde-Rond-1");
 		
 		Statement statement = connection.createStatement();
-		ResultSet resultSet = statement.executeQuery("SELECT id, text FROM lyric WHERE source='wikia' LIMIT 1000");
+		ResultSet resultSet = statement.executeQuery("SELECT id, title FROM song");
 		
 		PreparedStatement insertClusterStatement = connection
-		          .prepareStatement("INSERT INTO lyriccluster VALUES (?, ?, null)");
+		          .prepareStatement("INSERT INTO titlecluster VALUES (?, ?, null)");
 		
 		PreparedStatement insertClusterMemberStatement = connection
-		          .prepareStatement("INSERT INTO lyricclustermember VALUES (?, ?)");
+		          .prepareStatement("INSERT INTO titleclustermember VALUES (?, ?)");
 		
 		while (resultSet.next()) {
 			int id = resultSet.getInt("id");
-			String text = resultSet.getString("text").toLowerCase();
-			Document doc = new Document(Integer.toString(id), text);
+			String title = resultSet.getString("title").toLowerCase();
+			Document doc = new Document(Integer.toString(id), title);
 			documents.add(doc);
-			System.out.println("Insert id: " + id + ", text.length(): " + text.length());
+			System.out.println("Insert id: " + id + "," + title + " ");
 		}
 		
 		/* A controller to manage the processing pipeline. */
@@ -76,7 +76,7 @@ public class LyricClustering {
 	}
 
 	public static void main(String[] args) throws SQLException {
-		new LyricClustering();
+		new TitleClustering();
 	}
 
 }

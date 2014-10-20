@@ -1,4 +1,4 @@
-package termclustering;
+package clustering;
 
 import java.io.IOException;
 import java.sql.Connection;
@@ -8,7 +8,6 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Arrays;
 
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
 import org.apache.lucene.document.Document;
@@ -40,7 +39,7 @@ import org.carrot2.source.lucene.SimpleFieldMapperDescriptor;
 
 import com.google.common.collect.Maps;
 
-public class LuceneDatabase {
+public class TitleClusteringDatabaseLucene {
 	// based on http://www.lucenetutorial.com/lucene-in-5-minutes.html
 	// based on https://github.com/carrot2/carrot2/blob/master/applications/carrot2-examples/examples/org/carrot2/examples/clustering/ClusteringDataFromLucene.java
 	
@@ -48,29 +47,29 @@ public class LuceneDatabase {
 	public IndexWriterConfig config;
 	public StandardAnalyzer analyzer;
 	
-	public LuceneDatabase() throws SQLException, IOException, ParseException {	
+	public TitleClusteringDatabaseLucene() throws SQLException, IOException, ParseException {	
 		analyzer = new StandardAnalyzer();
 		index = new RAMDirectory();
 		config = new IndexWriterConfig(Version.LUCENE_4_10_1, analyzer);
 	}
 
 	public static void main(String[] args) throws SQLException, IOException, ParseException {
-		LuceneDatabase database = new LuceneDatabase();
+		TitleClusteringDatabaseLucene database = new TitleClusteringDatabaseLucene();
 	
 		database.fillFromMysql();
 		
 	    // Search query
 	    String querystr = "love";
 
-	    Query q = new QueryParser("lyric", database.analyzer).parse(querystr);
+	    Query q = new QueryParser("title", database.analyzer).parse(querystr);
 	    //database.search(q);
 	    
 	    org.apache.log4j.BasicConfigurator.configure();
 	    
-	    database.clusterLyrics();
+	    database.clusterTitle();
 	}
 
-	private void clusterLyrics() {
+	private void clusterTitle() {
 		final Controller controller = ControllerFactory.createPooling();
 		
         final Map<String, Object> luceneGlobalAttributes = new HashMap<String, Object>();
@@ -85,9 +84,9 @@ public class LuceneDatabase {
          */
         SimpleFieldMapperDescriptor
             .attributeBuilder(luceneGlobalAttributes)
-            .titleField("id")
+            .titleField("id");
             //.titleField("title") // TODO: add to index
-            .contentField("lyric");
+           // .contentField("lyric"); ERUIT GEHAALD MG
             //.searchFields(Arrays.asList(new String [] {"titleField", "fullContent"}));
 		
         controller.init(new HashMap<String, Object>(),
@@ -128,7 +127,7 @@ public class LuceneDatabase {
 	    for(int i=0;i<hits.length;++i) {
 	      int docId = hits[i].doc;
 	      Document d = searcher.doc(docId);
-	      System.out.println((i + 1) + ". " + d.get("id") + "\t" + d.get("lyric"));
+	      System.out.println((i + 1) + ". " + d.get("id") + "\t" + d.get("title"));
 	    }
 
 	    // reader can only be closed when there
@@ -143,23 +142,23 @@ public class LuceneDatabase {
 				+ "user=root&password=Aarde-Rond-1");
 		
 		Statement statement = connection.createStatement();
-		ResultSet resultSet = statement.executeQuery("SELECT id, text FROM lyric WHERE source='wikia' LIMIT 1000");
+		ResultSet resultSet = statement.executeQuery("SELECT songId, title FROM song LIMIT 1000");
 		
 		IndexWriter w = new IndexWriter(index, config);
 		
 		while (resultSet.next()) {
-			int lyricId = resultSet.getInt("id");
-			String text = resultSet.getString("text").toLowerCase();
-			addLyric(w, text, lyricId);
-			System.out.println("Insert id: " + lyricId + ", text.length(): " + text.length());
+			int songId = resultSet.getInt("id");
+			String title = resultSet.getString("title").toLowerCase();
+			addTitle(w, title, songId);
+			System.out.println("Insert id: " + songId + ", " + title + "");
 		}
 		w.close();
 	}
 	
-	private static void addLyric(IndexWriter w, String text, int lyricId) throws IOException {
+	private static void addTitle(IndexWriter w, String title, int songId) throws IOException {
 		  Document doc = new Document();
-		  doc.add(new TextField("lyric", text, Field.Store.YES));
-		  doc.add(new IntField("id", lyricId, Field.Store.YES));
+		  doc.add(new TextField("string", title, Field.Store.YES));
+		  doc.add(new IntField("id", songId, Field.Store.YES));
 		  w.addDocument(doc);
 	}
 }

@@ -9,7 +9,7 @@
  * http://www.carrot2.org/carrot2.LICENSE
  */
 
-package termclustering;
+package clustering;
 
 import java.text.NumberFormat;
 import java.util.Collection;

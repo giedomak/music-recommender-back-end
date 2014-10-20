@@ -14,13 +14,18 @@ import org.jsoup.Jsoup;
 import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
 
+/**
+ * Lyrics crawler for lyrics.wikia.com
+ * 
+ * author: Erik Agterdenbos
+ */
 public class WikiaCrawler {
 
 	public WikiaCrawler() {
-		// TODO Auto-generated constructor stub
 	}
 	
 	public static String getLyrics(Song song) {
+		// Step 1: search for the song using the API
 		String lyricUrl = "";
 		String lyricText = "";
 		try {
@@ -31,29 +36,26 @@ public class WikiaCrawler {
 			Document document = builder.parse(uri.toURL().openStream());
 			lyricUrl = document.getElementsByTagName("url").item(0).getTextContent();
 			
+			// Step 2: retrieve the lyric from their original website
 			org.jsoup.nodes.Document lyricPage = Jsoup.connect(lyricUrl).get();
 			org.jsoup.select.Elements lyrics = lyricPage.select(".lyricbox");
 			lyricText = lyrics.text();
 			
 		} catch (MalformedURLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (UnsupportedEncodingException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (URISyntaxException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (SAXException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (ParserConfigurationException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		
+		// return lyrics
 		return lyricText;
 	}
 }

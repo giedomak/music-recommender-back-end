@@ -1,4 +1,4 @@
-package termclustering;
+package clustering;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -10,42 +10,50 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.carrot2.clustering.lingo.LingoClusteringAlgorithm;
-import org.carrot2.clustering.synthetic.ByUrlClusteringAlgorithm;
 import org.carrot2.core.Cluster;
 import org.carrot2.core.Controller;
 import org.carrot2.core.ControllerFactory;
 import org.carrot2.core.Document;
 import org.carrot2.core.ProcessingResult;
 
-public class TitleClustering {
+/**
+ * Clusters songs based on the lyrics using Lingo algorithm from carrot2
+ * 
+ * author: Erik Agterdenbos
+ */
+public class LyricClustering {
+	// Temporary document index for clustering
 	final ArrayList<Document> documents = new ArrayList<Document>();
 	
-	public TitleClustering() throws SQLException {
+	public LyricClustering() throws SQLException {
 		
 		org.apache.log4j.BasicConfigurator.configure();
 		
+		// Create MySQL connection
 		Connection connection;
 		connection = DriverManager.getConnection("jdbc:mysql://178.62.207.179/2id26?"
 				+ "user=root&password=Aarde-Rond-1");
 		
 		Statement statement = connection.createStatement();
-		ResultSet resultSet = statement.executeQuery("SELECT id, title FROM song");
+		ResultSet resultSet = statement.executeQuery("SELECT id, text FROM lyric WHERE source='wikia' LIMIT 1000");
 		
 		PreparedStatement insertClusterStatement = connection
-		          .prepareStatement("INSERT INTO titlecluster VALUES (?, ?, null)");
+		          .prepareStatement("INSERT INTO lyriccluster VALUES (?, ?, null)");
 		
 		PreparedStatement insertClusterMemberStatement = connection
-		          .prepareStatement("INSERT INTO titleclustermember VALUES (?, ?)");
+		          .prepareStatement("INSERT INTO lyricclustermember VALUES (?, ?)");
 		
+		
+		// Iterate over all songs
 		while (resultSet.next()) {
 			int id = resultSet.getInt("id");
-			String title = resultSet.getString("title").toLowerCase();
-			Document doc = new Document(Integer.toString(id), title);
+			String text = resultSet.getString("text").toLowerCase();
+			Document doc = new Document(Integer.toString(id), text);
 			documents.add(doc);
-			System.out.println("Insert id: " + id + "," + title + " ");
+			System.out.println("Insert id: " + id + ", text.length(): " + text.length());
 		}
 		
-		/* A controller to manage the processing pipeline. */
+		// A controller to manage the processing pipeline
 		final Controller controller = ControllerFactory.createSimple();
 		 
 		/*
@@ -56,8 +64,11 @@ public class TitleClustering {
 		LingoClusteringAlgorithm.class);
 		final List<Cluster> clustersByTopic = byTopicClusters.getClusters();
 		
+		// Print results to the console using existing ConsoleFormatter class
 		ConsoleFormatter.displayResults(byTopicClusters);
 		
+		
+		// Save each cluster in the MySQL database
 		for (Cluster cluster : clustersByTopic) {
 			System.out.println("Label: " + cluster.getLabel());
 			System.out.println("Id: " + cluster.getId());
@@ -76,7 +87,7 @@ public class TitleClustering {
 	}
 
 	public static void main(String[] args) throws SQLException {
-		new TitleClustering();
+		new LyricClustering();
 	}
 
 }

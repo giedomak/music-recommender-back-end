@@ -1,5 +1,10 @@
 package lyriccrawler;
 
+/**
+ * Lyrics crawler song class
+ * 
+ * author: Erik Agterdenbos
+ */
 public class Song {
 	private int id;
 	private String artist, title;
