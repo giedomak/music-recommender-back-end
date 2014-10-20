@@ -38,6 +38,7 @@ public class DocumentSearchByTerms {
 	public List<Integer> Search(List<String> terms, List<Integer> songIds, int limit) {
 		String listTerms = null;
 		
+		//Convert List into string with , as separator.
 		for(String term : terms) {
 			if(listTerms != null && !terms.isEmpty()) {
 				listTerms += ", '"+term+"'";
@@ -53,6 +54,7 @@ public class DocumentSearchByTerms {
 		try {
 			String songIdsString = null;
 		
+			//Convert List into string with , as separator.
 			for(int id : songIds) {
 				if(songIdsString != null && !songIdsString.isEmpty()) {
 					songIdsString += ", "+Integer.toString(id);
@@ -70,8 +72,8 @@ public class DocumentSearchByTerms {
 			
 			List<Integer> songids  = new ArrayList<Integer>();
 			
+			//Turning result list into list of found songIds.
 			while(result.next()) {
-				//6+7
 				
 				songids.add(result.getInt(5));
 				if(this.debug) {
