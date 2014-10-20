@@ -63,7 +63,7 @@ public class Main {
 		
 		DocumentSearchByTerms searcher = new DocumentSearchByTerms(false, urlSQL, usernameSQL, passwordSQL, databaseSQL);
 		System.out.println("");
-		System.out.println("Recomends:");
+		System.out.println("Recommendations:");
 		searcher.Search(terms, idsSpotify, 10);
 	}
 

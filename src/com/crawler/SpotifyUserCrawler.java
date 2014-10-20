@@ -44,7 +44,7 @@ public class SpotifyUserCrawler {
 			//Set accesToken header, use adHeader for a second one.
 			httpget.setHeader("Authorization","Bearer "+ this.accessToken);
 		
-			//INIT Respone and execute request 
+			//INIT Response and execute request 
 			CloseableHttpResponse response = httpclient.execute(httpget);
 		
 			//Get response
@@ -64,7 +64,7 @@ public class SpotifyUserCrawler {
 			//Init UserPlaylist crawler
 			SpotifyUserPlaylistCrawler spotifyUserPlaylistCrawler = new SpotifyUserPlaylistCrawler(this.debug, this.accessToken, this.urlSQL,this.usernameSQL, this.passwordSQL, this.databaseSQL);
 			
-			//Start Playlist crawler
+			//Start UserPlaylist crawler
 			return spotifyUserPlaylistCrawler.Start(user.getId());
 			 
 		
