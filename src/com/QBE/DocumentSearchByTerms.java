@@ -5,6 +5,7 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 public class DocumentSearchByTerms {
@@ -34,9 +35,10 @@ public class DocumentSearchByTerms {
 		}
 	}
 	
-	public void Search(List<String> terms, List<Integer> songIds, int limit) {
+	public List<Integer> Search(List<String> terms, List<Integer> songIds, int limit) {
 		String listTerms = null;
 		
+		//Convert List into string with , as separator.
 		for(String term : terms) {
 			if(listTerms != null && !terms.isEmpty()) {
 				listTerms += ", '"+term+"'";
@@ -45,13 +47,14 @@ public class DocumentSearchByTerms {
 			}
 		}
 		
-		this.Search(listTerms, songIds, limit);
+		return this.Search(listTerms, songIds, limit);
 	}
 	
-	public void Search(String terms, List<Integer> songIds, int limit) {
+	public List<Integer> Search(String terms, List<Integer> songIds, int limit) {
 		try {
 			String songIdsString = null;
 		
+			//Convert List into string with , as separator.
 			for(int id : songIds) {
 				if(songIdsString != null && !songIdsString.isEmpty()) {
 					songIdsString += ", "+Integer.toString(id);
@@ -67,14 +70,22 @@ public class DocumentSearchByTerms {
 			pst.setInt(1, limit);
 			ResultSet result = pst.executeQuery();
 			
+			List<Integer> songids  = new ArrayList<Integer>();
+			
+			//Turning result list into list of found songIds.
 			while(result.next()) {
-				//6+7
-				System.out.println(result.getString(6)+" -- "+result.getString(7));
+				
+				songids.add(result.getInt(5));
+				if(this.debug) {
+					System.out.println(result.getString(6)+" -- "+result.getString(7));
+				}
 			}
+			
+			return songids;
 			
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		
+		return null;
 	}
 }
